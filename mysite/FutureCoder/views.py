@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.forms import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -117,6 +118,22 @@ class EnrolledCoursesListView(ListView):
 
     def get_queryset(self):
         return CourseEnrollment.objects.filter(user=self.request.user)
+
+    def start_lesson(request, pk):
+        lesson = get_object_or_404(Lesson, pk=pk)
+        progress, created = Progress.objects.get_or_create(user=request.user, lesson=lesson)
+        if created:
+            progress.start_time = timezone.now()
+            progress.save()
+        return render(request, 'lesson_detail.html', {'lesson': lesson})
+
+    def complete_lesson(request, pk):
+        lesson = get_object_or_404(Lesson, pk=pk)
+        progress, created = Progress.objects.get_or_create(user=request.user, lesson=lesson)
+        progress.end_time = timezone.now()
+        progress.save()
+        return redirect('lessons')
+
 
 def course_progress(request, lesson_id=None):
     if lesson_id is None:

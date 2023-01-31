@@ -1,3 +1,5 @@
+import datetime
+from django.utils import timezone
 from django.db import models
 from PIL import Image
 from django.contrib.auth.models import User
@@ -16,7 +18,7 @@ class Lesson(models.Model):
         ordering = ['title', 'description']
 
     def get_absolute_url(self):
-        """Returns the url to access a particular course instance."""
+        """Returns the url to access a particular lesson instance."""
         return reverse('course-detail', args=[str(self.pk)])
 
     def __str__(self):
@@ -63,7 +65,10 @@ class CourseEnrollment(models.Model):
 class Progress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    start_time = models.DateTimeField(default=timezone.now)
+    end_time = models.DateTimeField(null=True, blank=True)
     completed_quizzes = models.ManyToManyField(Quiz, blank=True)
-
+    def __str__(self):
+        return f"{self.user}'s progress in {self.lesson}"
 
 # Create your models here.
