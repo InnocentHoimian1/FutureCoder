@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>My Progress</h1>
+  <p>You have completed {{ completed_lessons }} out of {{ total_lessons }} courses ({{ completed_percentage }}%)</p>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: {{ completed_percentage }}%" aria-valuenow="{{ completed_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+{% endblock %}

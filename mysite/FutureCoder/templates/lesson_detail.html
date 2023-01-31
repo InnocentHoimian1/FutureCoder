@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>{{ lesson.title }}</h1>
+  <p>Description: {{ lesson.description | safe}}<p>
+ <iframe src="https://docs.google.com/presentation/d/{{ lesson.presentation_id }}/embed" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+  <p>Duration: {{ lesson.duration }}</p>
+  <p>Start date: {{ lesson.start_date }}</p>
+  <ul>
+    {% for lesson in lesson_set.all %}
+      <li>{{ lesson.title }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Welcome FutureCoder</h1>
+  <p>We are happy to see you today!</p>
+<p><strong>A this moment:</strong></p>
+  <ul>
+    <li><strong>Lessons:</strong> {{ num_lesson }}</li>
+    <li><strong>Quiz:</strong> {{ num_quiz }}</li>
+  </ul>
+<p>Hello FutureCoder, {{ user }}</p>
+<p>Thank for your {{ num_visits }} visit </p>
+{% endblock %}

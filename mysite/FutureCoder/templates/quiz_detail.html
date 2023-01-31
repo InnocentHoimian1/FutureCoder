@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ lesson.title }}</h1>
+  <p>Question: {{ quiz.question | safe}}<p>
+   <iframe src="{{ quiz.question }}" frameborder="0" width="600" height="450" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+  <p>Duration: {{ quiz.duration }}</p>
+  <p>Start date: {{ quiz.start_date }}</p>
+  <ul>
+    {% for quiz in quiz_set.all %}
+      <li>{{ quiz.question }}</li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}
