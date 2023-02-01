@@ -72,12 +72,12 @@ def register(request):
         if password1 == password2:
             # ar neužimtas username
             if User.objects.filter(username=username).exists():
-                messages.error(request, f"Vartotojo vardas {username} užimtas!")
+                messages.error(request, f"User name {username} already exist!")
                 return redirect("register")
             else:
                 # ar nėra tokio pačio email
                 if User.objects.filter(email=email).exists():
-                    messages.error(request, f"Emailas {email} jau užimtas kito vartotojo")
+                    messages.error(request, f"Email {email} is already used by another user")
                     return redirect("register")
                 else:
                     # taškas kai viskas tvarkoje, patikrinimai praeiti, kuriam naują userį
@@ -85,7 +85,7 @@ def register(request):
                     messages.info(request, f"User {username} succesfully registered")
                     return redirect("login")
         else:
-            messages.error(request, "Slaptažodžiai nesutampa")
+            messages.error(request, "Password does not match")
             return redirect("register")
     return render(request, "register.html")
 
@@ -98,7 +98,7 @@ def profilis(request):
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
-            messages.info(request, "Profilis sėkmingai atnaujintas")
+            messages.info(request, "Profile successfully updated")
             return redirect("profilis")
     else:
         u_form = UserUpdateForm(instance=request.user)

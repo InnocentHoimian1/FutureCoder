@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Lesson, Quiz, Profilis
+from .models import Lesson, Quiz, Profilis, Progress, CourseEnrollment
 
 class QuizInline(admin.TabularInline):
     model = Quiz
@@ -16,7 +16,11 @@ class QuizAdmin(admin.ModelAdmin):
     list_display = ('lesson', 'question', 'correct_option')
 
 
+
+
 admin.site.register(Lesson, LessonAdmin)
 admin.site.register(Quiz, QuizAdmin)
 admin.site.register(Profilis)
+admin.site.register(Progress)
+admin.site.register(CourseEnrollment)
 # Register your models here.

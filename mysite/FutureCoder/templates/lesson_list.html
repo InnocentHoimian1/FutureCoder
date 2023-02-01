@@ -1,14 +1,43 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
+
 <h1>Lessons</h1>
 {% if lessons %}
-<ul>
+    <div class="row">
 {% for lesson in lessons %}
-    <li><a href="{% url 'lesson_detail' lesson.pk %}">{{ lesson.title }} {{ lesson.presentation }}</a></li>
-{% endfor %}
-</ul>
- {% else %}
+<div class="col-md-4 d-flex align-items-stretch">
+<div class="card mb-4 shadow-sm">
+            {% if lesson.image %}
+<img src="{{ lesson.image.url }}" class="card-img-top" alt="..."> {% else %}
+<img src="{% static 'img/no-image.png' %}" class="card-img-top"> {% endif %}
+<div class="card-body">
+<h6 class="card-subtitle mb-2 text-muted">{{ lesson.author }}</h6>
+<p class="card-text">
+  <a href="{% url 'lesson_detail' lesson.pk %}">{{ lesson.title }}</a>
+</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+{% else %}
     <p>No lessons at this moment!</p>
-  {% endif %}
-
+{% endif %}
+<div class="pagination">
+    <span class="step-links">
+{% if page_obj.has_previous %}
+<a href="?page=1">&laquo; first</a>
+<a href="?page={{ page_obj.previous_page_number }}">back</a>
+{% endif %}
+<span class="current">
+{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+</span>
+{% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}">next</a>
+<a href="?page={{ page_obj.paginator.num_pages }}">end
+&raquo;</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}

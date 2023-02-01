@@ -35,8 +35,11 @@ class Quiz(models.Model):
     correct_option = models.CharField(max_length=255)
     position = models.IntegerField(default=5)
 
+    class Meta:
+        ordering = ['question']
+
     def __str__(self):
-        return f"{self.question} {self.correct_option}"
+        return f"{self.correct_option}"
 
 class Profilis(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -68,7 +71,28 @@ class Progress(models.Model):
     start_time = models.DateTimeField(default=timezone.now)
     end_time = models.DateTimeField(null=True, blank=True)
     completed_quizzes = models.ManyToManyField(Quiz, blank=True)
+
+    LESSON_STATUS = (
+        ('e', 'Editing'),
+        ('s', 'Started'),
+        ('f', 'Finished'),
+    )
+    status = models.CharField(
+        max_length=1,
+        choices=LESSON_STATUS,
+        blank=True,
+        default='e',
+        help_text='Status',
+    )
+
+
+    class Meta:
+        ordering = ['end_time']
+
+
     def __str__(self):
-        return f"{self.user}'s progress in {self.lesson}"
+        return f'{self.lesson.title}'
+
+
 
 # Create your models here.
