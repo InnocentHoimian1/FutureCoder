@@ -10,7 +10,7 @@ class Lesson(models.Model):
     title = models.CharField(max_length=255)
     description = HTMLField(default="")
     video_url = models.URLField()
-    presentation = models.FileField(upload_to='lessons/presentations/')
+    presentation_url = models.URLField(default="")
     position = models.IntegerField()
     image = models.ImageField('Image', upload_to='courses/', null=True)
 
