@@ -17,6 +17,11 @@ class Lesson(models.Model):
     class Meta:
         ordering = ['title']
 
+    def display_lesson(self):
+        return ', '.join(lesson.title for lesson in self.lesson.all()[:3])
+
+    display_lesson.short_description = 'Lesson'
+
     def get_absolute_url(self):
         """Returns the url to access a particular lesson instance."""
         return reverse('course-detail', args=[str(self.pk)])
@@ -24,6 +29,7 @@ class Lesson(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.title} {self.description}'
+
 
 
 class Quiz(models.Model):
@@ -39,6 +45,8 @@ class Quiz(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+
+
 
 class Profilis(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

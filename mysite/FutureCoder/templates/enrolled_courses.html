@@ -2,9 +2,16 @@
 
 {% block content %}
   <h1>Enrolled Courses</h1>
+
+{% if enrolled_courses %}
   <ul>
-    {% for course in enrolled_courses %}
-      <li>{{ course.name }}</li>
+    {% for enrollment in enrolled_courses %}
+      <li>
+        {{ enrollment.user }} enrolled in {{ enrollment.lesson | safe }} on {{ enrollment.date_enrolled }}
+      </li>
     {% endfor %}
   </ul>
+{% else %}
+  <p>You have not enrolled in any courses yet.</p>
+{% endif %}
 {% endblock %}
