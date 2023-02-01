@@ -135,24 +135,30 @@ class EnrolledCoursesListView(ListView):
         return redirect('lessons')
 
 
-def course_progress(request, lesson_id=None):
-    if lesson_id is None:
-        return redirect('lesson_list')
-    else:
+def course_progress(request):
+    lessons = Lesson.objects.all()
+    if not lessons:
+        return render(request, 'user_progress.html', {'message': 'No lessons available'})
+    progress = Progress.objects.filter(user=request.user)
+    completed_lessons = [p.lesson for p in progress]
+    quizzes = Quiz.objects.filter(lesson__in=completed_lessons)
+    if not quizzes:
+        return render(request, 'user_progress.html', {'message': 'No quizzes available'})
+    completed_quizzes = [p.completed_quizzes.all() for p in progress]
+    completed_percentage = 0
+    if lessons:
+        completed_percentage = (len(completed_lessons) / len(lessons)) * 100
+        completed_percentage = round(completed_percentage)
 
-        lessons = get_object_or_404(Lesson, pk=lesson_id)
-        quizzes = Quiz.objects.filter(lesson__in=lessons)
+    return render(request, 'user_progress.html', {
+        'lessons': lessons,
+        'quizzes': quizzes,
+        'completed_lessons': completed_lessons,
+        'completed_quizzes': completed_quizzes,
+        'completed_percentage': completed_percentage,
+    })
 
-        progress, created = Progress.objects.get_or_create(user=request.user, lessons=lessons)
-        completed_lessons = progress.completed_lessons.all()
-        completed_quizzes = progress.completed_quizzes.all()
 
-        return render(request, 'user_progress.html', {
-            'lessons': lessons,
-            'quizzes': quizzes,
-            'completed_lessons': completed_lessons,
-            'completed_quizzes': completed_quizzes,
-        })
 
 
 

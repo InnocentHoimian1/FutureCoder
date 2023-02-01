@@ -12,7 +12,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('profile/', views.profilis, name='profile'),
     path('enrolled_courses/', views.EnrolledCoursesListView.as_view(), name='enrolled_courses'),
-    path('user_progress', views.course_progress, name='user_progress'),
+    path('user_progress/', views.course_progress, name='user_progress'),
     path('user_progress/<int:course_id>/', views.course_progress, name='user_progress'),
     path('enrolled_courses/', views.EnrolledCoursesListView.as_view(), name='enrolled_courses')
 

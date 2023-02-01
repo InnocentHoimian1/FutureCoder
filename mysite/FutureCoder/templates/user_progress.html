@@ -1,18 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
+
   <h1>My Progress</h1>
-  <p>You have completed {{ completed_lessons }} out of {{ total_lessons }} courses ({{ completed_percentage }}%)</p>
+  <p>You have completed {{ completed_lessons|length }} out of {{ enrolled_courses|length }} courses ({{ completed_percentage }}%)</p>
   <div class="progress">
     <div class="progress-bar" role="progressbar" style="width: {{ completed_percentage }}%" aria-valuenow="{{ completed_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
   </div>
-{% for copy in book.bookinstance_set.all %} <hr>
-<p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">
-        {{ copy.get_status_display }}
-      </p>
-{% if copy.status != 'a' %}
-<p><strong>Bus grąžinta:</strong> {{ copy.due_back }}</p>
-{% endif %}
-<p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p> {% endfor %}
-  </div>
+  <h2>Completed Lessons</h2>
+  <ul>
+    {% for enrolled_course in enrolled_courses %}
+      <li>{{ lesson.title }}</li>
+    {% endfor %}
+  </ul>
+  <h2>Completed Quizzes</h2>
+  <ul>
+    {% for quiz in completed_quizzes %}
+      <li>{{ quiz.title }}</li>
+    {% endfor %}
+  </ul>
 {% endblock %}
