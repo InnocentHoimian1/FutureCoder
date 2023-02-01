@@ -10,7 +10,7 @@ class Lesson(models.Model):
     title = models.CharField(max_length=255)
     description = HTMLField(default="")
     video_url = models.URLField()
-    presentation_url = models.URLField(default="")
+    presentation_id = models.CharField(max_length=255, default="")
     position = models.IntegerField()
     image = models.ImageField('Image', upload_to='courses/', null=True)
 
@@ -28,18 +28,16 @@ class Lesson(models.Model):
 
 class Quiz(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    question = HTMLField(default="")
-    option1 = models.CharField(max_length=255)
-    option2 = models.CharField(max_length=255)
-    option3 = models.CharField(max_length=255)
-    correct_option = models.CharField(max_length=255)
+    presentation_id = models.CharField(max_length=255, default="")
     position = models.IntegerField(default=5)
+    title = models.CharField(max_length=255, default="")
+    image = models.ImageField('Image', upload_to='courses/', null=True, default="")
 
     class Meta:
-        ordering = ['question']
+        ordering = ['title']
 
     def __str__(self):
-        return f"{self.correct_option}"
+        return f"{self.title}"
 
 class Profilis(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

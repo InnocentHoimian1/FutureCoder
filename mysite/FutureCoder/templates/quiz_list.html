@@ -1,13 +1,44 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
+
 <h1>Quizzes</h1>
 {% if quizzes %}
-<ul>
+    <div class="row">
 {% for quiz in quizzes %}
-    <li><a href="{% url 'quiz_detail' quiz.pk %}">{{ quiz.question | safe }}</a></li>
+    <div class="col-md-4 d-flex align-items-stretch">
+        <div class="card mb-4 shadow-sm">
+            {% if quiz.image %}
+                <img src="{{ quiz.image.url }}" class="card-img-top" alt="...">
+            {% else %}
+                <img src="{% static 'img/no-image.png' %}" class="card-img-top">
+            {% endif %}
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">{{ quiz.lesson.author }}</h6>
+                <p class="card-text">
+                    <a href="{% url 'quiz_detail' quiz.pk %}">{{ quiz.title }}</a>
+                </p>
+            </div>
+        </div>
+    </div>
 {% endfor %}
-</ul>
- {% else %}
-    <p>No quiz at this moment!</p>
-  {% endif %}
+    </div>
+{% else %}
+    <p>No quizzes at this moment!</p>
+{% endif %}
+<div class="pagination">
+    <span class="step-links">
+{% if page_obj.has_previous %}
+    <a href="?page=1">&laquo; first</a>
+    <a href="?page={{ page_obj.previous_page_number }}">back</a>
+{% endif %}
+    <span class="current">
+        {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+{% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">next</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">end &raquo;</a>
+{% endif %}
+    </span>
+</div>
 {% endblock %}

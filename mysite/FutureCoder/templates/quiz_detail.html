@@ -1,14 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>{{ lesson.title }}</h1>
-  <p>Question: {{ quiz.question | safe}}<p>
-   <iframe src="{{ quiz.question }}" frameborder="0" width="600" height="450" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-  <p>Duration: {{ quiz.duration }}</p>
-  <p>Start date: {{ quiz.start_date }}</p>
-  <ul>
-    {% for quiz in quiz_set.all %}
-      <li>{{ quiz.question }}</li>
-    {% endfor %}
-  </ul>
-
+  <h1>{{ quiz.title }}</h1>
+  <iframe src="https://docs.google.com/forms/d/{{ quiz.presentation_id }}/viewform" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+  <p>Position: {{ quiz.position }}</p>
+  {% if quiz.image %}
+  <p>Image: {{ quiz.image.url }}</p>
+  {% endif %}
 {% endblock %}

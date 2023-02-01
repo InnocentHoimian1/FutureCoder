@@ -3,8 +3,8 @@
 
   <h1>{{ lesson.title }}</h1>
   <p>Description: {{ lesson.description | safe}}<p>
- <iframe src="{{ lesson.presentation_url }}" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-<p>Duration: {{ lesson.duration }}</p>
+ <iframe src="https://docs.google.com/presentation/d/{{ lesson.presentation_id }}/embed" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+  <p>Duration: {{ lesson.duration }}</p>
 <h2>Lesson Details</h2>
 <p>Start Time: {{ progress.start_time }}</p>
 {% if progress.end_time %}
