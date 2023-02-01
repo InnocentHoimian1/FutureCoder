@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
   <h1>{{ quiz.title }}</h1>
-  <iframe src="https://docs.google.com/forms/d/{{ quiz.presentation_id }}/viewform" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+  <iframe src="https://docs.google.com/forms/d/{{ quiz.presentation_id }}/viewform?usp=sf_link" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
   <p>Position: {{ quiz.position }}</p>
-  {% if quiz.image %}
   <p>Image: {{ quiz.image.url }}</p>
-  {% endif %}
 {% endblock %}

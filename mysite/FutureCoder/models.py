@@ -15,7 +15,7 @@ class Lesson(models.Model):
     image = models.ImageField('Image', upload_to='courses/', null=True)
 
     class Meta:
-        ordering = ['title', 'description']
+        ordering = ['title']
 
     def get_absolute_url(self):
         """Returns the url to access a particular lesson instance."""
@@ -32,6 +32,7 @@ class Quiz(models.Model):
     position = models.IntegerField(default=5)
     title = models.CharField(max_length=255, default="")
     image = models.ImageField('Image', upload_to='courses/', null=True, default="")
+
 
     class Meta:
         ordering = ['title']

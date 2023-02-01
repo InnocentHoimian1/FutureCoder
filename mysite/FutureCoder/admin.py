@@ -13,7 +13,8 @@ class LessonAdmin(admin.ModelAdmin):
     inlines = [QuizInline]
 
 class QuizAdmin(admin.ModelAdmin):
-    list_display = ('lesson', 'title')
+    list_display = ('title', 'lesson')
+
 
 
 
