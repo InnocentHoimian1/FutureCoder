@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Search results for "{{ query }}"</h1>
+  <h1>Search results for {{ query }}</h1>
 
 {% if lessons %}
   <ul>
     {% for lesson in lessons %}
       <li>
-        <h2>{{ lesson.title }}</h2>
-        <p>{{ lesson.description }}</p>
+        <a href="{% url 'lesson_detail' lesson.id %}">{{ lesson.title | safe}}</a>
+        <p>{{ lesson.description | safe }}</p>
       </li>
     {% endfor %}
   </ul>

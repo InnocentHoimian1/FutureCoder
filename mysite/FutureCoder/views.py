@@ -56,9 +56,9 @@ paprasta paieška. query ima informaciją iš paieškos laukelio,
 search_results prafiltruoja pagal įvestą tekstą knygų pavadinimus ir aprašymus.
 Icontains nuo contains skiriasi tuo, kad icontains ignoruoja ar raidės didžiosios/mažosios.
 """
-    query = request.GET.get('query')
+    query = request.GET.get("query")
     lessons = Lesson.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
-    return render(request, 'search.html', {'lessons': lessons, 'query': query})
+    return render(request, "search.html", {"lessons": lessons, "query": query})
 
 @csrf_protect
 def register(request):
