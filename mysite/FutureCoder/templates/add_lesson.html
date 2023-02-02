@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ lesson.title }}</h1>
+  <p>{{ lesson.description }}</p>
+  <p>{{ lesson.created_at }}</p>
+  <a href="{% url 'lesson_list' %}" class="btn btn-secondary">Back</a>
+{% endblock %}

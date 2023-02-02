@@ -4,7 +4,6 @@
 
   <h1>Enrolled Courses</h1>
 {% if enrolled_courses %}
-
   <ul>
     {% for enrollment in enrolled_courses %}
       <li>
@@ -19,4 +18,5 @@
 {% else %}
   <p>You have not enrolled in any courses yet.</p>
 {% endif %}
+<a href="{% url 'add_lesson' %}" class="btn btn-primary">Enroll in additional courses and quizzes</a>
 {% endblock %}

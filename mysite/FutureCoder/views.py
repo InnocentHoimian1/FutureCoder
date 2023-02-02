@@ -30,6 +30,28 @@ class IndexView(generic.TemplateView):
         })
         return context
 
+    def post(self, request, *args, **kwargs):
+        course = get_object_or_404(Lesson, pk=request.POST.get('course_id'))
+        quiz = get_object_or_404(Quiz, pk=request.POST.get('quiz_id'))
+        user = request.user
+        now = timezone.now()
+
+        # Check if user has already enrolled in the course
+        if CourseEnrollment.objects.filter(user=user, course=course).exists():
+            messages.error(request, "You have already enrolled in this course.")
+            return redirect('index')
+
+        # Check if user has already enrolled in the quiz
+        if CourseEnrollment.objects.filter(user=user, quiz=quiz).exists():
+            messages.error(request, "You have already enrolled in this quiz.")
+            return redirect('index')
+
+        # Create course enrollment
+        CourseEnrollment.objects.create(user=user, course=course, quiz=quiz, date_enrolled=now)
+        messages.success(request, "You have successfully enrolled in the course and quiz.")
+        return redirect('index')
+
+
 
 class LessonListView(generic.ListView):
     model = Lesson
@@ -42,6 +64,16 @@ class LessonDetailView(generic.DetailView):
     paginate_by = 2
     template_name = 'lesson_detail.html'
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        course_enrollment = CourseEnrollment.objects.get(user=self.request.user, course=self.object)
+        Progress.objects.create(user=self.request.user, course=self.object, percentage=100)
+        course_enrollment.completed = True
+        course_enrollment.save()
+        messages.info(request, "Lesson Completed")
+        return redirect("lesson_list")
+
+
 class QuizListView(generic.ListView):
     model = Quiz
     template_name = 'quiz_list.html'
@@ -50,6 +82,16 @@ class QuizListView(generic.ListView):
 class QuizDetailView(generic.DetailView):
     model = Quiz
     template_name = 'quiz_detail.html'
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        course_enrollment = CourseEnrollment.objects.get(user=self.request.user, course=self.object.lesson)
+        Progress.objects.create(user=self.request.user, course=self.object.lesson, percentage=100)
+        course_enrollment.completed = True
+        course_enrollment.save()
+        messages.info(request, "Quiz Completed")
+        return redirect("quiz_list")
+
 def search(request):
     """
 paprasta paieška. query ima informaciją iš paieškos laukelio,
@@ -110,7 +152,15 @@ def profilis(request):
     }
 
     return render(request, "profile.html", context=context)
-
+def enroll(request, course_id):
+    course = get_object_or_404(Lesson, pk=course_id)
+    if CourseEnrollment.objects.filter(user=request.user, course=course).exists():
+        messages.error(request, "You are already enrolled in this course.")
+        return redirect("lesson_list")
+    else:
+        CourseEnrollment.objects.create(user=request.user, course=course)
+        messages.info(request, "You are now enrolled in this course.")
+        return redirect("lesson_list")
 class EnrolledCoursesListView(ListView):
     model = CourseEnrollment
     template_name = 'enrolled_courses.html'
@@ -134,6 +184,24 @@ class EnrolledCoursesListView(ListView):
         progress.save()
         return redirect('lessons')
 
+def add_lesson(request):
+    if request.method == 'POST':
+        # Process form submission
+        title = request.POST['title']
+        description = request.POST['description']
+        author = request.POST['author']
+        image = request.FILES.get('image')
+
+        lesson = Lesson.objects.create(
+            title=title,
+            description=description,
+            author=author,
+            image=image
+        )
+        return redirect('lesson_detail', lesson.id)
+    else:
+        # Render form template
+        return render(request, 'add_lesson.html')
 
 def course_progress(request):
     lessons = Lesson.objects.all()
