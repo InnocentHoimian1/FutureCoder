@@ -3,15 +3,16 @@
 {% block content %}
 
   <h1>My Progress</h1>
-  <p>You have completed {{ completed_lessons|length }} out of {{ enrolled_courses|length }} courses ({{ completed_percentage }}%)</p>
+  <p>You have completed {{ completed_lessons|length }} out of {{ lessons|length }} courses ({{ completed_percentage }}%)</p>
   <div class="progress">
     <div class="progress-bar" role="progressbar" style="width: {{ completed_percentage }}%" aria-valuenow="{{ completed_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
   </div>
   <h2>Completed Lessons</h2>
   <ul>
     {% for enrolled_course in enrolled_courses %}
-      <li>{{ lesson.title }}</li>
+      <li>{{ enrolled_course.lesson.title }}</li>
     {% endfor %}
+
   </ul>
   <h2>Completed Quizzes</h2>
   <ul>

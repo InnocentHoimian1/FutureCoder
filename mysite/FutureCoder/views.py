@@ -145,6 +145,7 @@ def course_progress(request):
     if not quizzes:
         return render(request, 'user_progress.html', {'message': 'No quizzes available'})
     completed_quizzes = [p.completed_quizzes.all() for p in progress]
+    enrolled_courses = CourseEnrollment.objects.filter(user=request.user)
     completed_percentage = 0
     if lessons:
         completed_percentage = (len(completed_lessons) / len(lessons)) * 100
@@ -156,6 +157,7 @@ def course_progress(request):
         'completed_lessons': completed_lessons,
         'completed_quizzes': completed_quizzes,
         'completed_percentage': completed_percentage,
+        'enrolled_courses': enrolled_courses
     })
 
 

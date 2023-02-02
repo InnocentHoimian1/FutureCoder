@@ -1,13 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Enrolled Courses</h1>
 
+  <h1>Enrolled Courses</h1>
 {% if enrolled_courses %}
+
   <ul>
     {% for enrollment in enrolled_courses %}
       <li>
-        {{ enrollment.user }} enrolled in {{ enrollment.lesson | safe }} on {{ enrollment.date_enrolled }}
+        {% if enrollment.lesson.id %}
+          {{ enrollment.user }} enrolled in <a href="{% url 'lesson_detail' enrollment.lesson.id %}">{{ enrollment.lesson | safe }}</a> on {{ enrollment.date_enrolled }}
+        {% else %}
+          {{ enrollment.user }} enrolled in {{ enrollment.lesson | safe }} on {{ enrollment.date_enrolled }}
+        {% endif %}
       </li>
     {% endfor %}
   </ul>
